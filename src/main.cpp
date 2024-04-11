@@ -3,11 +3,18 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "App.h"
 
 using namespace std;
+using namespace MiniMario;
 
 int main() {
     cout << "hello pookie bear";
+    cout << flush;
+
+    App app = App();
+
+    app.run();
 
     return 0;
 }
