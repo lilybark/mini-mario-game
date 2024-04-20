@@ -5,6 +5,8 @@
 #include <cstdlib>
 #include <chrono>
 #include <iostream>
+#include <cmath>
+#include <thread>
 #include "App.h"
 #include "renderer/RendererController.h"
 
@@ -20,8 +22,9 @@ namespace MiniMario {
         // TODO: set the error callback to something that works with our logging utils!
         // glfwSetErrorCallback(bla);
 
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwDefaultWindowHints();
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         window = glfwCreateWindow(800, 600, "Untitled Window", nullptr, nullptr);
         if (window == nullptr) {
@@ -31,37 +34,40 @@ namespace MiniMario {
         }
 
         glfwMakeContextCurrent(window);
+        glfwSwapInterval(1);
         gladLoadGL(glfwGetProcAddress);
 
         // initialize GL
-
-
+        Renderer::RendererController::get();
 
     }
 
     void App::run() {
         while (!glfwWindowShouldClose(window)) {
-            double startTime = glfwGetTime();
             // gets buffered events, like button presses and window events.
+            double startTime = glfwGetTime();
+
             glfwPollEvents();
 
-            // set background color to black
-            glClearColor(0.0, 0.0, 0.0, 1.0);
-            glClear(GL_COLOR_BUFFER_BIT);
 
-            //Renderer::RendererController::get()->update(deltaTime());
+            Renderer::RendererController::get()->update(deltaTime());
 
             // glfw runs with two buffers (to reduce shearing). We swap one and draw to another, afaik.
             glfwSwapBuffers(window);
-
+            // set background color to black
+            glClearColor(0.0, 0.0, 0.0, 0.0);
+            glClear(GL_COLOR_BUFFER_BIT);
 
             double endTime = glfwGetTime();
             dt = endTime - startTime;
+
+            //std::cout << dt << std::endl << std::flush;
         }
     }
 
     App::~App() {
         // will handle other closing operations later...
+        glLinkProgram(0);
         glfwTerminate();
     }
 

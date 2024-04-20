@@ -34,11 +34,34 @@ namespace MiniMario {
              * float array is equal to count * (sum of layout counts).
              */
             VertexBuffer(size_t count, const std::vector<LayoutElement> &layout);
+
+            void bindBuffer() const;
+
+            void uploadBuffer();
+
+            void insertVertex(const float *data); // dubious; can easily lead to UB if data isn't allocated long enough.
+
+            void attachShader() const;
+
+            void bindArray() const;
+
+            void enableAttributes();
+
+            void render() const;
+
+            void disableAttributes();
+
+            void unbind();
+
+            void clear();
+
         private:
-            // raw vertices
-            std::vector<float> vertexData;
+            // raw vertex data
+            float *vertexData;
+            // this plus the layout tells you the length of the vertex data.
+            size_t numVertices{};
             // the ordering of the vertices
-            std::vector<size_t> elementData;
+            int *elementData;
             // the data layout of a single vertex
             std::vector<LayoutElement> layout;
             // the GLSL code for processing vertices
@@ -46,7 +69,8 @@ namespace MiniMario {
             // the GLSL code for rendering triangles
             std::string fragmentShader;
 
-            GLuint vao, vbo, ibo, programID, vertexID, fragmentID;
+            GLuint vao{}, vbo{}, ebo{}, programID{}, vertexID{}, fragmentID{};
+            size_t elementCount{};
         };
 
     } // Renderer

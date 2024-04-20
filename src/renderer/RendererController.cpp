@@ -13,12 +13,39 @@ namespace MiniMario {
             return _inst;
         }
 
-        void RendererController::init() {
-            // ...
-        }
-
         void RendererController::update(double) {
-            // ...
+            // push vertices
+            float verts[40] = {
+                    .5, .5, .0, 0., 0., 1., 1., 0., 0., 0.,
+                    -.5, .5, .0, 0., 1., 0., 1., 0., 0., 0.,
+                    -.5, -.5, .0, 1., 0., 0., 1., 0., 0., 0.,
+                    .5, -.5, .0, 1., 1., 0., 1., 0., 0., 0.,
+            };
+
+            for (int i = 0; i < 4; i++) {
+                this->vertexBuffer->insertVertex((&verts[0]) + i*10);
+            }
+
+            this->vertexBuffer->bindArray();
+            this->vertexBuffer->bindBuffer();
+            this->vertexBuffer->attachShader();
+
+            this->vertexBuffer->bindArray();
+            this->vertexBuffer->enableAttributes();
+
+            // TODO: shader uniforms and textures
+
+            this->vertexBuffer->bindArray();
+            this->vertexBuffer->bindBuffer();
+            this->vertexBuffer->uploadBuffer();
+
+            this->vertexBuffer->render();
+
+            this->vertexBuffer->disableAttributes();
+
+            this->vertexBuffer->unbind();
+
+            this->vertexBuffer->clear();
         }
 
         void RendererController::close() {
@@ -35,7 +62,11 @@ namespace MiniMario {
                     VertexBuffer::LayoutElement{"texID", 1},
                     };
 
-            vertexBuffer = VertexBuffer(2<<13, DEFAULT_LAYOUT);
+            vertexBuffer = new VertexBuffer(2<<12, DEFAULT_LAYOUT);
+        }
+
+        RendererController::~RendererController() {
+            delete vertexBuffer;
         }
     }
 }

@@ -16,13 +16,12 @@ namespace MiniMario {
         private:
             RendererController();
             static RendererController *_inst;
-
-            VertexBuffer vertexBuffer;
+            VertexBuffer *vertexBuffer;
 
         public:
             RendererController(RendererController &) = delete;
+            ~RendererController();
             static RendererController *get();
-            void init();
             void update(double);
             void close();
         };

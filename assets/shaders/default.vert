@@ -16,5 +16,5 @@ void main() {
     fTexUV = aTexUV;
     fTexID = aTexID;
 
-    gl_FragCoord = aPos;
+    gl_Position = vec4(aPos, 1.0);
 }
