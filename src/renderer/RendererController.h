@@ -24,6 +24,8 @@ namespace MiniMario {
             static RendererController *get();
             void update(double);
             void close();
+
+            void pushVertex(const float *data);
         };
     }
 }

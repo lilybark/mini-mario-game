@@ -20,6 +20,22 @@ add_executable(mini-mario
         vendor/glad/src/gl.c
         src/renderer/VertexBuffer.cpp
         src/renderer/VertexBuffer.h
+        src/Entity.cpp
+        src/Entity.h
+        src/math/Mat4.cpp
+        src/math/Mat4.h
+        src/math/Vec4.cpp
+        src/math/Vec4.h
+        src/math/Vec3.cpp
+        src/math/Vec3.h
+        src/math/SquareMatrix.h
+        src/math/Vector.h
+        src/entities/Rectangle.cpp
+        src/entities/Rectangle.h
+        src/Scene.cpp
+        src/Scene.h
+        src/renderer/Camera.cpp
+        src/renderer/Camera.h
 )
 
 set_target_properties(mini-mario PROPERTIES POSITION_INDEPENDENT_CODE True)

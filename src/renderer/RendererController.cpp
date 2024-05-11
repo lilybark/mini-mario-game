@@ -14,18 +14,6 @@ namespace MiniMario {
         }
 
         void RendererController::update(double) {
-            // push vertices
-            float verts[40] = {
-                    .5, .5, .0, 0., 0., 1., 1., 0., 0., 0.,
-                    -.5, .5, .0, 0., 1., 0., 1., 0., 0., 0.,
-                    -.5, -.5, .0, 1., 0., 0., 1., 0., 0., 0.,
-                    .5, -.5, .0, 1., 1., 0., 1., 0., 0., 0.,
-            };
-
-            for (int i = 0; i < 4; i++) {
-                this->vertexBuffer->insertVertex((&verts[0]) + i*10);
-            }
-
             this->vertexBuffer->bindArray();
             this->vertexBuffer->bindBuffer();
             this->vertexBuffer->attachShader();
@@ -67,6 +55,10 @@ namespace MiniMario {
 
         RendererController::~RendererController() {
             delete vertexBuffer;
+        }
+
+        void RendererController::pushVertex(const float *data) {
+            this->vertexBuffer->insertVertex(data);
         }
     }
 }

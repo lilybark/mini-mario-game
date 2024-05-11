@@ -3,12 +3,10 @@
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
 #include <cstdlib>
-#include <chrono>
 #include <iostream>
-#include <cmath>
-#include <thread>
 #include "App.h"
 #include "renderer/RendererController.h"
+#include "entities/Rectangle.h"
 
 namespace MiniMario {
     App::App() {
@@ -43,12 +41,15 @@ namespace MiniMario {
     }
 
     void App::run() {
+        // debug entity: to be removed!
+        Rectangle r{};
         while (!glfwWindowShouldClose(window)) {
             // gets buffered events, like button presses and window events.
             double startTime = glfwGetTime();
 
             glfwPollEvents();
 
+            r.update(deltaTime());
 
             Renderer::RendererController::get()->update(deltaTime());
 
