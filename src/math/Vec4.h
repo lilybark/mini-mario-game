@@ -12,10 +12,9 @@ namespace MiniMario {
         public:
             Vec4() : Vector() {}
 
+            Vec4(const float w, const float x, const float y, const float z);
             explicit Vec4(const float array[4]);
-
-            Vec4 operator+(const Vec4 &other);
-            Vec4 operator*(float);
+            Vec4(const Vector<4,float> &);
         };
 
     } // Math

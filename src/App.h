@@ -6,6 +6,9 @@
 #include <GLFW/glfw3.h>
 
 namespace MiniMario {
+    //forward decl
+    class Scene;
+
     /**
      * # App
      *
@@ -30,8 +33,11 @@ namespace MiniMario {
         void run();
         double deltaTime() const;
 
+        void setScene(MiniMario::Scene *s);
+
     private:
         GLFWwindow *window;
+        Scene *scene;
         double dt{};
     };
 }

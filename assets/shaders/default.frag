@@ -1,6 +1,6 @@
 #version 330 core
 
-in vec3 fPos;
+in vec4 fPos;
 in vec4 fColor;
 in vec2 fTexCoords;
 in float fTexID;
@@ -46,7 +46,10 @@ void main()
     }
     else
     {
-        color = fColor;
+        if (gl_FragCoord.z <= -0.75)
+            color = vec4(1.0);
+        else
+            color = fColor;
     }
 
 /*

@@ -16,11 +16,15 @@ namespace MiniMario {
             void moveTo(Math::Vec3 pos);
             void translate(Math::Vec3 dPos);
 
+            // TODO: implement rotation
             void setRotate(Math::Vec3 rot);
             void rotate(Math::Vec3 dRot);
 
-            Math::Mat4 getProjectionMatrix();
+            Math::Mat4 getOrthographicMatrix();
             Math::Mat4 getPerspectiveMatrix();
+
+            Math::Mat4 getViewMatrix();
+
         private:
             Math::Mat4 projection;
             Math::Vec3 position;

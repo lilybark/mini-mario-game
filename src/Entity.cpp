@@ -16,4 +16,16 @@ namespace MiniMario {
     size_t Entity::getID() {
         return id;
     }
+
+    Entity::~Entity() {
+
+    }
+
+    void Entity::moveTo(const Math::Vec3 &d) {
+        this->pos = d;
+    }
+
+    Math::Vec3 Entity::getPos() {
+        return this->pos;
+    }
 } // MiniMario

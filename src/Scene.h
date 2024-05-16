@@ -5,17 +5,21 @@
 
 #include <vector>
 #include "Entity.h"
+#include "renderer/Camera.h"
 
 namespace MiniMario {
 
     class Scene {
     public:
         virtual void start() = 0;
-        virtual void update() = 0;
+        virtual void update(double) = 0;
         virtual void stop() = 0;
-    private:
+    protected:
+        void uploadCamera();
+
+        Renderer::Camera camera{};
         std::vector<Entity *> entities;
-        const Entity *getEntity(size_t id);
+        Entity *getEntity(size_t id);
     };
 
 } // MiniMario

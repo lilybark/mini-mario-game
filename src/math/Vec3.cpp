@@ -28,7 +28,7 @@ namespace MiniMario {
             this->data[2] = other.data[2];
         }
 
-        Vec3 Vec3::cross(const Vec3 &other) {
+        Vec3 Vec3::cross(const Vec3 &other) const {
             return Vec3(
                     this->data[1] * other.data[2] - this->data[2] * other.data[1],
                     this->data[2] * other.data[0] - this->data[0] * other.data[2],

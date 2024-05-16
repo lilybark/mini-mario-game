@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include "glad/gl.h"
+#include "math/Mat4.h"
 
 namespace MiniMario {
     namespace Renderer {
@@ -55,6 +56,8 @@ namespace MiniMario {
 
             void clear();
 
+            void uploadMat4(const std::string &name, const Math::Mat4 &m);
+
         private:
             // raw vertex data
             float *vertexData;
@@ -71,6 +74,8 @@ namespace MiniMario {
 
             GLuint vao{}, vbo{}, ebo{}, programID{}, vertexID{}, fragmentID{};
             size_t elementCount{};
+
+            size_t layoutCount();
         };
 
     } // Renderer

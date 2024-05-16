@@ -9,7 +9,7 @@
 namespace MiniMario {
     namespace Math {
 
-        class Vec3 : public Vector<3, float> {
+        class Vec3 : public Vector<3,float> {
         public:
             Vec3() : Vector() {}
             Vec3(float x, float y, float z);
@@ -18,7 +18,7 @@ namespace MiniMario {
             // does not need to be explicit
             Vec3(const Vector<3, float>&);
 
-            Vec3 cross(const Vec3 &other);
+            Vec3 cross(const Vec3 &other) const;
         };
 
     } // Math

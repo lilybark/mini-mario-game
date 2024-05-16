@@ -5,6 +5,7 @@
 
 
 #include "VertexBuffer.h"
+#include "math/Mat4.h"
 
 namespace MiniMario {
     namespace Renderer {
@@ -18,6 +19,8 @@ namespace MiniMario {
             static RendererController *_inst;
             VertexBuffer *vertexBuffer;
 
+            Math::Mat4 projMatrix, viewMatrix;
+
         public:
             RendererController(RendererController &) = delete;
             ~RendererController();
@@ -26,6 +29,10 @@ namespace MiniMario {
             void close();
 
             void pushVertex(const float *data);
+
+            void setProjection(Math::Mat4 &mat4);
+
+            void setView(Math::Mat4 &mat4);
         };
     }
 }

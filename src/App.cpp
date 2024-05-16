@@ -7,6 +7,7 @@
 #include "App.h"
 #include "renderer/RendererController.h"
 #include "entities/Rectangle.h"
+#include "Scene.h"
 
 namespace MiniMario {
     App::App() {
@@ -38,18 +39,24 @@ namespace MiniMario {
         // initialize GL
         Renderer::RendererController::get();
 
+
+        // initialize current scene
+        this->scene = nullptr;
     }
 
     void App::run() {
         // debug entity: to be removed!
-        Rectangle r{};
+        Rectangle r1{};
+        Rectangle r2{};
+        Rectangle r3{};
+
         while (!glfwWindowShouldClose(window)) {
             // gets buffered events, like button presses and window events.
             double startTime = glfwGetTime();
 
             glfwPollEvents();
 
-            r.update(deltaTime());
+            if (this->scene) this->scene->update(deltaTime());
 
             Renderer::RendererController::get()->update(deltaTime());
 
@@ -67,6 +74,9 @@ namespace MiniMario {
     }
 
     App::~App() {
+        if (this->scene)
+            this->scene->stop();
+
         // will handle other closing operations later...
         glLinkProgram(0);
         glfwTerminate();
@@ -74,5 +84,12 @@ namespace MiniMario {
 
     double App::deltaTime() const {
         return dt;
+    }
+
+    void App::setScene(MiniMario::Scene *s) {
+        if (this->scene) this->scene->stop();
+
+        this->scene = s;
+        this->scene->start();
     }
 }

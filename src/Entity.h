@@ -13,6 +13,8 @@ namespace MiniMario {
      */
     class Entity {
     public:
+        virtual ~Entity();
+
         /**
          * Draw this entity to the screen.
          */
@@ -30,12 +32,15 @@ namespace MiniMario {
         virtual void transform(Math::Mat4 &trans) = 0;
 
         void translate(const Math::Vec3 &d);
+        void moveTo(const Math::Vec3 &d);
+
         /**
          * Performs a scaling local to the center of the entity. Under the hood, it resets the `scale` member field.
          * @param s The new scale
          */
         void rescale(const Math::Vec3 &s);
 
+        Math::Vec3 getPos();
         size_t getID();
 
     protected:

@@ -11,27 +11,34 @@ namespace MiniMario {
         template<size_t N, typename T>
         class Vector {
         public:
+            Vector() = default;
+            Vector<N,T>(T d) {
+                for (int i = 0; i < N; i++) {
+                    this->data[i] = d;
+                }
+            }
+
             T dot(const Vector<N,T> &other) const {
                 T ret{};
                 for (int i = 0; i < N; i++) {
-                    ret += this->data[i] * other->data[i];
+                    ret += this->data[i] * other.data[i];
                 }
                 return ret;
             }
 
             T distSquared() const {
-                return this->dot(this);
+                return this->dot(*this);
             }
 
             T dist() const {
                 return sqrt(distSquared());
             }
 
-            Vector<N,T> normal() {
-                return this / this->dist();
+            Vector<N,T> normal() const {
+                return Vector<N,T>(*this / this->dist());
             }
 
-            Vector<N,T> operator+(const Vector<N,T> &other) {
+            Vector<N,T> operator+(const Vector<N,T> &other) const {
                 Vector<N,T> ret{};
                 for (int i = 0; i < N; i++) {
                     ret[i] = this->data[i] + other.data[i];
@@ -39,7 +46,7 @@ namespace MiniMario {
                 return ret;
             }
 
-            Vector<N,T> operator-(const Vector<N,T> &other) {
+            Vector<N,T> operator-(const Vector<N,T> &other) const {
                 Vector<N,T> ret{};
                 for (int i = 0; i < N; i++) {
                     ret[i] = this->data[i] - other.data[i];
@@ -67,7 +74,7 @@ namespace MiniMario {
                 return ret;
             }
 
-            Vector<N,T> operator/(const T scalar) {
+            Vector<N,T> operator/(const T scalar) const {
                 Vector<N,T> ret{};
                 for (int i = 0; i < N; i++) {
                     ret[i] = this->data[i] / scalar;

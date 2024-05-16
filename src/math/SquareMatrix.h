@@ -45,7 +45,15 @@ namespace MiniMario {
                 for (int i = 0; i < N; i++) {
                     dest[i] = 0;
                     for (int j = 0; j < N; j++) {
-                        dest[i] += this->data[j*N+i] * vec.data[j];
+                        dest[i] += this->data[i*N+j] * vec.data[j];
+                    }
+                }
+            }
+
+            void transpose(SquareMatrix<N,T> &dest) {
+                for (int i = 0; i < N; i++) {
+                    for (int j = 0; j < N; j++) {
+                        dest.data[i*N+j] = this->data[j*N+i];
                     }
                 }
             }
@@ -78,6 +86,16 @@ namespace MiniMario {
                     }
                 }
             }
+
+            static SquareMatrix<N,T> ident() {
+                SquareMatrix<N,T> ret{};
+                for (int i = 0; i < N*N; i+=(N+1)) {
+                    ret.data[i] = 1.0;
+                }
+
+                return ret;
+            }
+
 
             T data[N*N];
         };

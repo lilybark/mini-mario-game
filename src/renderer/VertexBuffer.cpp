@@ -152,7 +152,7 @@ namespace MiniMario {
 
         void VertexBuffer::uploadBuffer() {
             glBufferData(GL_ARRAY_BUFFER,
-                         static_cast<long>(this->numVertices*10*sizeof(float)),
+                         static_cast<long>(this->numVertices*this->layoutCount()*sizeof(float)),
                          this->vertexData,
                          GL_DYNAMIC_DRAW);
 
@@ -160,12 +160,12 @@ namespace MiniMario {
             this->elementCount = 0;
 
             for (int i = 0; i < this->numVertices / 4; i++) {
-                this->elementData[i*6]   = (3 + i*6);
-                this->elementData[i*6+1] = (2 + i*6);
-                this->elementData[i*6+2] = (0 + i*6);
-                this->elementData[i*6+3] = (0 + i*6);
-                this->elementData[i*6+4] = (2 + i*6);
-                this->elementData[i*6+5] = (1 + i*6);
+                this->elementData[i*6]   = (3 + i*4);
+                this->elementData[i*6+1] = (2 + i*4);
+                this->elementData[i*6+2] = (0 + i*4);
+                this->elementData[i*6+3] = (0 + i*4);
+                this->elementData[i*6+4] = (2 + i*4);
+                this->elementData[i*6+5] = (1 + i*4);
 
                 this->elementCount += 6;
             }
@@ -177,10 +177,9 @@ namespace MiniMario {
         }
 
         void VertexBuffer::insertVertex(const float *data) {
-            // TODO: function that queries number of floats per vertex in place of "10" literal
-            size_t floatOffset = numVertices * 10;
+            size_t floatOffset = numVertices * this->layoutCount();
             // note that pointer arithmetic here implicitly resizes floatOffset by a factor of sizeof(float)
-            memcpy((float *) this->vertexData + floatOffset, data, 10*sizeof(float));
+            memcpy((float *) (this->vertexData + floatOffset), data, this->layoutCount()*sizeof(float));
 
             this->numVertices++;
         }
@@ -200,7 +199,7 @@ namespace MiniMario {
                                       (GLint) (this->layout[i].count),
                                       GL_FLOAT,
                                       GL_TRUE,
-                                      10*sizeof(float),
+                                      this->layoutCount()*sizeof(float),
                                       (void *) offset);
                 glEnableVertexAttribArray(i);
                 offset += this->layout[i].count * sizeof(float);
@@ -228,6 +227,20 @@ namespace MiniMario {
         void VertexBuffer::clear() {
             this->elementCount = 0;
             this->numVertices = 0;
+        }
+
+        void VertexBuffer::uploadMat4(const std::string &name, const Math::Mat4 &m) {
+            auto loc = glGetUniformLocation(this->programID, name.c_str());
+
+            glUniformMatrix4fv(loc, 1, GL_FALSE, &m.data[0]);
+        }
+
+        size_t VertexBuffer::layoutCount() {
+            size_t ret = 0;
+            for (LayoutElement &e : this->layout) {
+                ret += e.count;
+            }
+            return ret;
         }
 
 

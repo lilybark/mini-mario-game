@@ -12,12 +12,18 @@ namespace MiniMario {
 
         class Mat4 : public SquareMatrix<4,float> {
         public:
+            Mat4() = default;
+            Mat4(const SquareMatrix<4,float> &);
+
             Mat4 operator*(const Mat4 &other);
+            Mat4 operator*(const float other);
             Vec4 operator*(const Vec4 &other);
 
-            Mat4 orthographic();
-            Mat4 perspective();
-            Mat4 viewMatrix(const Vec3 &camPos, const Vec3 &eye, const Vec3 &up);
+            Mat4 transpose();
+
+            static Mat4 orthographic(float left, float right, float top, float bottom, float near, float far);
+            static Mat4 perspective(float fov, float aspect, float front, float back);
+            static Mat4 viewMatrix(const Vec3 &camPos, const Vec3 &eye, const Vec3 &up);
         };
 
     } // Math
