@@ -28,13 +28,13 @@ namespace MiniMario {
             float tbdiff = top - bottom;
             float fndiff = far - near;
 
-            ret.data[0] = 2.0 / rldiff;
+            ret.data[0] = 2.0f / rldiff;
             ret.data[3] = -(right + left) / rldiff;
 
-            ret.data[5] = 2.0 / tbdiff;
+            ret.data[5] = 2.0f / tbdiff;
             ret.data[7] = -(top + bottom) / tbdiff;
 
-            ret.data[10] = -2.0 / fndiff;
+            ret.data[10] = -2.0f / fndiff;
             ret.data[11] = -(far + near) / fndiff;
 
             ret.data[15] = 1.0;

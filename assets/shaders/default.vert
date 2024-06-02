@@ -19,5 +19,6 @@ void main() {
     fTexUV = aTexUV;
     fTexID = aTexID;
 
-    gl_Position = projection * view * aPos;
+    gl_Position = fPos;
 }
+

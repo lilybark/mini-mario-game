@@ -47,6 +47,8 @@ namespace MiniMario {
         RendererController *RendererController::_inst = nullptr;
 
         RendererController::RendererController() {
+            this->projMatrix = Math::Mat4::ident();
+            this->viewMatrix = Math::Mat4::ident();
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             glDepthFunc(GL_NEVER);
@@ -61,8 +63,6 @@ namespace MiniMario {
 
             vertexBuffer = new VertexBuffer(2<<12, DEFAULT_LAYOUT);
 
-            this->projMatrix = Math::Mat4::ident();
-            this->viewMatrix = Math::Mat4::ident();
         }
 
         RendererController::~RendererController() {

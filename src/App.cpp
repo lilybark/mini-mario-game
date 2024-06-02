@@ -8,6 +8,7 @@
 #include "renderer/RendererController.h"
 #include "entities/Rectangle.h"
 #include "Scene.h"
+#include "input/Keyboard.h"
 
 namespace MiniMario {
     App::App() {
@@ -38,6 +39,9 @@ namespace MiniMario {
 
         // initialize GL
         Renderer::RendererController::get();
+
+        // setup input callbacks
+        glfwSetKeyCallback(window, Keyboard::glfwCallback);
 
 
         // initialize current scene

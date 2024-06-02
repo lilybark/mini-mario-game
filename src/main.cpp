@@ -5,6 +5,7 @@
 #include <string>
 #include "App.h"
 #include "scenes/BouncyRectangles.h"
+#include "scenes/Painter.h"
 
 using namespace std;
 using namespace MiniMario;
@@ -14,7 +15,7 @@ int main() {
     cout << flush;
 
     App app = App();
-    app.setScene(new BouncyRectangles());
+    app.setScene(new Painter());
     app.run();
 
     return 0;

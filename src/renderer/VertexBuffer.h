@@ -56,7 +56,7 @@ namespace MiniMario {
 
             void clear();
 
-            void uploadMat4(const std::string &name, const Math::Mat4 &m);
+            void uploadMat4(const std::string &name, const Math::Mat4 &m) const;
 
         private:
             // raw vertex data

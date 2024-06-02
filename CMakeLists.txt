@@ -38,6 +38,10 @@ add_executable(mini-mario
         src/renderer/Camera.h
         src/scenes/BouncyRectangles.cpp
         src/scenes/BouncyRectangles.h
+        src/input/Keyboard.cpp
+        src/input/Keyboard.h
+        src/scenes/Painter.cpp
+        src/scenes/Painter.h
 )
 
 set_target_properties(mini-mario PROPERTIES POSITION_INDEPENDENT_CODE True)

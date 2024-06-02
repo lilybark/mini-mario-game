@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include <cstring>
+#include <limits>
 
 namespace MiniMario {
     namespace Renderer {
@@ -41,12 +42,15 @@ namespace MiniMario {
                 std::filebuf *t_buffer = t.rdbuf();
 
                 // get file size
-                std::size_t size = t_buffer->pubseekoff(0, std::ifstream::end, std::ifstream::in);
-                t_buffer->pubseekpos(0, std::ifstream::in);
+                t.ignore( std::numeric_limits<std::streamsize>::max() );
+                std::streamsize size = t.gcount();
+                t.clear();   //  Since ignore will have set eof.
+                t.seekg( 0, std::ios_base::beg );
 
                 // create string from file contents
-                char *f_buffer = new char[size];
+                char *f_buffer = new char[size+1];
                 t_buffer->sgetn(f_buffer, static_cast<std::streamsize>(size));
+                f_buffer[size] = 0;
                 this->vertexShader = std::string(f_buffer);
                 delete[] f_buffer;
 
@@ -87,12 +91,19 @@ namespace MiniMario {
                 std::filebuf *t_buffer = t.rdbuf();
 
                 // get file size
-                std::size_t size = t_buffer->pubseekoff(0, std::ifstream::end, std::ifstream::in);
-                t_buffer->pubseekpos(0, std::ifstream::in);
+                // incorrect:
+                //std::size_t size = t_buffer->pubseekoff(0, std::ifstream::end, std::ifstream::in);
+                //t_buffer->pubseekpos(0, std::ifstream::in);
+                // correct:
+                t.ignore( std::numeric_limits<std::streamsize>::max() );
+                std::streamsize size = t.gcount();
+                t.clear();   //  Since ignore will have set eof.
+                t.seekg( 0, std::ios_base::beg );
 
                 // create string from file contents
-                char *f_buffer = new char[size];
+                char *f_buffer = new char[size+1];
                 t_buffer->sgetn(f_buffer, static_cast<std::streamsize>(size));
+                f_buffer[size] = 0; // null terminate
                 this->fragmentShader = std::string(f_buffer);
                 delete[] f_buffer;
 
@@ -143,6 +154,14 @@ namespace MiniMario {
                 std::cout << std::string(errorMessage.data()) << std::endl;
                 exit(-1);
             }
+
+            glGetError();
+            glUseProgram(programID);
+
+            if (glGetError() == 1282) {
+                std::cerr << "Invalid shader program; is there a deceptive bug in your code?" << std::endl;
+                exit(-1);
+            }
         }
 
         void VertexBuffer::bindBuffer() const {
@@ -185,7 +204,14 @@ namespace MiniMario {
         }
 
         void VertexBuffer::attachShader() const {
+            glGetError();
             glUseProgram(this->programID);
+
+            auto c = glGetError();
+            if (c) {
+                std::cerr << "ERROR: received opengl error while attaching shader: " << c << std::endl;
+                std::cerr << "note: this->programID == " << this->programID << std::endl;
+            }
         }
 
         void VertexBuffer::bindArray() const {
@@ -229,9 +255,23 @@ namespace MiniMario {
             this->numVertices = 0;
         }
 
-        void VertexBuffer::uploadMat4(const std::string &name, const Math::Mat4 &m) {
-            auto loc = glGetUniformLocation(this->programID, name.c_str());
+        void VertexBuffer::uploadMat4(const std::string &name, const Math::Mat4 &m) const {
+            glGetError();
+            glUseProgram(0);
 
+            auto c = glGetError();
+            if (c) {
+                std::cerr << "ERROR: received opengl 1 error: " << c << std::endl;
+            }
+            glUseProgram(this->programID);
+
+            auto *chars = name.c_str();
+            auto loc = glGetUniformLocation(this->programID, chars);
+
+            if (loc == -1) {
+                std::cerr << "ERROR: shader uniform " << name << " not found." << std::endl;
+                exit(-1);
+            }
             glUniformMatrix4fv(loc, 1, GL_FALSE, &m.data[0]);
         }
 

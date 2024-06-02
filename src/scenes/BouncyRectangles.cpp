@@ -11,8 +11,8 @@ namespace MiniMario {
         int numLeftRight = 5;
         int numUpDown = 5;
 
-        float horizSpacing = 0.8 / ((numLeftRight - 1) / 2.0);
-        float vertSpacing = 0.8 / ((numUpDown - 1) / 2.0);
+        float horizSpacing = 0.8f / ((static_cast<float>(numLeftRight) - 1) / 2.0f);
+        float vertSpacing = 0.8f / ((static_cast<float>(numUpDown) - 1) / 2.0f);
 
         this->camera.moveTo({0.0, 0.0, 0.1});
 
