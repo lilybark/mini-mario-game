@@ -20,24 +20,24 @@ namespace MiniMario {
     }
 
     void Painter::update(double dt) {
+        const float SPEED = 3.0;
+
         auto *r = dynamic_cast<Rectangle *>(entities[0]);
-        if (Keyboard::isKeyPressed(Keyboard::Key::W)) {
-            r->translate({0.0,(float) dt,0.0});
+        if (Keyboard::isPressed(Keyboard::Key::W)) {
+            r->translate({0.0,(float) dt*SPEED,0.0});
         }
-        if (Keyboard::isKeyPressed(Keyboard::Key::S)) {
-            r->translate({0.0, (float) -dt, 0.0});
+        if (Keyboard::isPressed(Keyboard::Key::S)) {
+            r->translate({0.0, (float) -dt*SPEED, 0.0});
         }
-        if (Keyboard::isKeyPressed(Keyboard::Key::A)) {
-            r->translate({(float) -dt,0.0,0.0});
+        if (Keyboard::isPressed(Keyboard::Key::A)) {
+            r->translate({(float) -dt*SPEED,0.0,0.0});
         }
-        if (Keyboard::isKeyPressed(Keyboard::Key::D)) {
-            r->translate({(float) dt,0.0,0.0});
+        if (Keyboard::isPressed(Keyboard::Key::D)) {
+            r->translate({(float) dt*SPEED,0.0,0.0});
         }
         this->uploadCamera();
 
         for (Entity *e : this->entities) {
-            //e->rescale({rectWidth, static_cast<float>(rectWidth * sin(acc)), rectWidth});
-
             e->update(dt);
         }
     }

@@ -42,6 +42,10 @@ add_executable(mini-mario
         src/input/Keyboard.h
         src/scenes/Painter.cpp
         src/scenes/Painter.h
+        src/input/Mouse.cpp
+        src/input/Mouse.h
+        src/math/Vec2.cpp
+        src/math/Vec2.h
 )
 
 set_target_properties(mini-mario PROPERTIES POSITION_INDEPENDENT_CODE True)

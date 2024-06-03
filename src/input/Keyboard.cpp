@@ -29,19 +29,19 @@ namespace MiniMario {
 
     }
 
-    bool Keyboard::isKeyPressed(Keyboard::Key k) {
+    bool Keyboard::isPressed(Key k) {
         return Keyboard::get().pressedKeys[static_cast<size_t>(k)];
     }
-    bool Keyboard::isModifierPressed(Mods m) {
-        if (static_cast<size_t>(m) > 0x003f) {
-            std::cerr << "Invalid modifier key code: " << std::bitset<8>(m) << std::endl;
+    bool Keyboard::checkMods(Mods k) {
+        if (static_cast<size_t>(k) > 0x003f) {
+            std::cerr << "Invalid modifier key code: " << std::bitset<8>(k) << std::endl;
             exit(-1);
         }
 
-        return (m == Keyboard::get().modifiers);
+        return (k == Keyboard::get().modifiers);
     }
 
-    bool Keyboard::isKeyRepeated(Keyboard::Key k) {
+    bool Keyboard::isRepeated(Key k) {
         return Keyboard::get().pressedKeys[static_cast<size_t>(k)];
     }
 

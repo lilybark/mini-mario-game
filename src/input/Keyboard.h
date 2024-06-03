@@ -136,12 +136,6 @@ namespace MiniMario {
             MENU              = 348,
         };
 
-        enum Action {
-            KEY_RELEASE,
-            KEY_PRESS,
-            KEY_REPEAT,
-        };
-
         enum Mods {
             SHIFT = 0x0001,
             CONTROL = 0x0002,
@@ -151,17 +145,17 @@ namespace MiniMario {
             NUM_LOCK = 0x0020,
         };
 
-        static Keyboard &get();
 
-        static bool isKeyPressed(Key k);
-        static bool isModifierPressed(Mods k);
-        static bool isKeyRepeated(Key k);
+        static bool isPressed(Key k);
+        static bool checkMods(Mods k);
+        static bool isRepeated(Key k);
 
         static void glfwCallback(GLFWwindow *w, int key, int scancode, int action, int mods);
 
 
     private:
         Keyboard() = default;
+        static Keyboard &get();
         // internal state for which keys and modifiers GLFW has registered to be pressed or repeated.
         bool pressedKeys[350]{};
         bool repeatedKeys[350]{};
