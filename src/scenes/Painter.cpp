@@ -5,6 +5,7 @@
 #include "Painter.h"
 #include "input/Keyboard.h"
 #include "entities/Rectangle.h"
+#include "input/Mouse.h"
 
 namespace MiniMario {
     void Painter::start() {
@@ -21,20 +22,30 @@ namespace MiniMario {
 
     void Painter::update(double dt) {
         const float SPEED = 3.0;
+        using Key = Keyboard::Key;
 
         auto *r = dynamic_cast<Rectangle *>(entities[0]);
-        if (Keyboard::isPressed(Keyboard::Key::W)) {
+        if (Keyboard::isPressed(Key::W)) {
             r->translate({0.0,(float) dt*SPEED,0.0});
         }
-        if (Keyboard::isPressed(Keyboard::Key::S)) {
+        if (Keyboard::isPressed(Key::S)) {
             r->translate({0.0, (float) -dt*SPEED, 0.0});
         }
-        if (Keyboard::isPressed(Keyboard::Key::A)) {
+        if (Keyboard::isPressed(Key::A)) {
             r->translate({(float) -dt*SPEED,0.0,0.0});
         }
-        if (Keyboard::isPressed(Keyboard::Key::D)) {
+        if (Keyboard::isPressed(Key::D)) {
             r->translate({(float) dt*SPEED,0.0,0.0});
         }
+        using Button = Mouse::Button;
+
+        if (Mouse::isPressed(Button::LEFT)) {
+            r->setColor({1.0f, 0.0f, 0.0f, 1.0f});
+        } else {
+            r->setColor({1.0f, 1.0f, 1.0f, 1.0f});
+        }
+
+
         this->uploadCamera();
 
         for (Entity *e : this->entities) {

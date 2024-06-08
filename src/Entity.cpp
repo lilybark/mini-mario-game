@@ -28,4 +28,8 @@ namespace MiniMario {
     Math::Vec3 Entity::getPos() {
         return this->pos;
     }
+
+    void Entity::setRot(const Math::Vec3 &d) {
+        this->rot = d;
+    }
 } // MiniMario

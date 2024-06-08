@@ -34,6 +34,8 @@ namespace MiniMario {
         void translate(const Math::Vec3 &d);
         void moveTo(const Math::Vec3 &d);
 
+        void setRot(const Math::Vec3 &d);
+
         /**
          * Performs a scaling local to the center of the entity. Under the hood, it resets the `scale` member field.
          * @param s The new scale
@@ -47,6 +49,7 @@ namespace MiniMario {
         static size_t _ID;
         Math::Vec3 pos;
         Math::Vec3 scale;
+        Math::Vec3 rot;
         size_t id = _ID++;
     };
 

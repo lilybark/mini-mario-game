@@ -51,6 +51,12 @@ namespace MiniMario {
     }
 
     void Mouse::glfwButtonCallback(GLFWwindow *, int button, int action, int mods) {
+        Mouse::get().modifiers = static_cast<Mods>(mods);
+        if (action == GLFW_PRESS) {
+            Mouse::get().pressedButtons[button] = true;
+        } else {
+            Mouse::get().pressedButtons[button] = false;
+        }
 
     }
 } // MiniMario

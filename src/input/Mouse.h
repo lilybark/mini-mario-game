@@ -30,8 +30,8 @@ namespace MiniMario {
             BUTTON_7        = 6,
             BUTTON_8        = 7,
 
-            BUTTON_RIGHT    = BUTTON_2,
-            BUTTON_LEFT     = BUTTON_1,
+            RIGHT    = BUTTON_2,
+            LEFT     = BUTTON_1,
         };
 
         enum Mods {

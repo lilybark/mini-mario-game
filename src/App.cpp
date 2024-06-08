@@ -9,6 +9,7 @@
 #include "entities/Rectangle.h"
 #include "Scene.h"
 #include "input/Keyboard.h"
+#include "input/Mouse.h"
 
 namespace MiniMario {
     App::App() {
@@ -42,6 +43,9 @@ namespace MiniMario {
 
         // setup input callbacks
         glfwSetKeyCallback(window, Keyboard::glfwCallback);
+        glfwSetCursorPosCallback(window, Mouse::glfwPosCallback);
+        glfwSetScrollCallback(window, Mouse::glfwScrollCallback);
+        glfwSetMouseButtonCallback(window, Mouse::glfwButtonCallback);
 
 
         // initialize current scene
