@@ -27,16 +27,21 @@ namespace MiniMario {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-        window = glfwCreateWindow(800, 600, "Untitled Window", nullptr, nullptr);
+
+        width = 800; height = 600; title = std::string("Untitled Window");
+
+        window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
         if (window == nullptr) {
             // error! for now, we exit
-            std::cout << "glfw window init fail!" << std::endl;
+            std::cerr << "glfw window initialization failed!" << std::endl;
             exit(-1);
         }
 
         glfwMakeContextCurrent(window);
         glfwSwapInterval(1);
         gladLoadGL(glfwGetProcAddress);
+
+        glViewport(0, 0, width, height);
 
         // initialize GL
         Renderer::RendererController::get();
@@ -46,7 +51,15 @@ namespace MiniMario {
         glfwSetCursorPosCallback(window, Mouse::glfwPosCallback);
         glfwSetScrollCallback(window, Mouse::glfwScrollCallback);
         glfwSetMouseButtonCallback(window, Mouse::glfwButtonCallback);
+        glfwSetWindowSizeCallback(window, [](GLFWwindow *, const int width, const int height) {
+            auto *a = get();
+            a->width = width;
+            a->height = height;
 
+            glViewport(0, 0, width, height);
+        });
+
+        Renderer::RendererController::get();
 
         // initialize current scene
         this->scene = nullptr;
@@ -81,6 +94,11 @@ namespace MiniMario {
         }
     }
 
+    App *App::get() {
+        if (!_inst) _inst = new App();
+        return _inst;
+    }
+
     App::~App() {
         if (this->scene)
             this->scene->stop();
@@ -100,4 +118,6 @@ namespace MiniMario {
         this->scene = s;
         this->scene->start();
     }
+
+    App *App::_inst = nullptr;
 }

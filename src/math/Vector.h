@@ -11,11 +11,30 @@ namespace MiniMario {
         template<size_t N, typename T>
         class Vector {
         public:
-            Vector() = default;
-            Vector<N,T>(T d) {
+            Vector() {
+                Vector(0.0);
+            }
+            explicit Vector(T d) {
                 for (int i = 0; i < N; i++) {
                     this->data[i] = d;
                 }
+            }
+
+            template<size_t N2>
+            explicit Vector(const Vector<N2, T> &other) {
+                constexpr size_t end = N2 > N ? N : N2;
+                for (int i = 0; i < end; i++) {
+                    this->data[i] = other->data[i];
+                }
+            }
+
+            const T &at(size_t idx) const {
+                if (idx >= N) {
+                    // TODO: error here
+                    exit(-1);
+                }
+
+                return this->data[idx];
             }
 
             T dot(const Vector<N,T> &other) const {

@@ -4,10 +4,11 @@
 #define MINI_MARIO_RECTANGLE_H
 
 #include "Entity.h"
+#include "renderer/RendererController.h"
 
 namespace MiniMario {
 
-    class Rectangle : public Entity {
+    class Rectangle : public Entity, Renderer::Renderable {
     public:
         Rectangle();
         ~Rectangle() override;

@@ -12,8 +12,10 @@ namespace MiniMario {
 
         auto *r = new Rectangle();
         r->setColor({1.0,1.0,1.0,1.0});
+        /*
         r->moveTo({0.0, 0.0, -2.0});
         r->rescale({0.5, 0.5, 0.5});
+        */
 
         this->entities.push_back(r);
 
@@ -24,6 +26,7 @@ namespace MiniMario {
         const float SPEED = 3.0;
         using Key = Keyboard::Key;
 
+        /*
         auto *r = dynamic_cast<Rectangle *>(entities[0]);
         if (Keyboard::isPressed(Key::W)) {
             r->translate({0.0,(float) dt*SPEED,0.0});
@@ -45,6 +48,7 @@ namespace MiniMario {
             r->setColor({1.0f, 1.0f, 1.0f, 1.0f});
         }
 
+*/
 
         this->uploadCamera();
 

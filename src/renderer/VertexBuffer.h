@@ -5,7 +5,6 @@
 
 #include <vector>
 #include <string>
-#include "glad/gl.h"
 #include "math/Mat4.h"
 
 namespace MiniMario {
@@ -42,6 +41,8 @@ namespace MiniMario {
 
             void insertVertex(const float *data); // dubious; can easily lead to UB if data isn't allocated long enough.
 
+            void insertElements(const int *data, size_t size, size_t vertexOffset);
+
             void attachShader() const;
 
             void bindArray() const;
@@ -56,7 +57,10 @@ namespace MiniMario {
 
             void clear();
 
+            void uploadFloat(const std::string &name, float f) const;
             void uploadMat4(const std::string &name, const Math::Mat4 &m) const;
+
+            size_t getNumVertices() const { return numVertices; }
 
         private:
             // raw vertex data
@@ -72,7 +76,7 @@ namespace MiniMario {
             // the GLSL code for rendering triangles
             std::string fragmentShader;
 
-            GLuint vao{}, vbo{}, ebo{}, programID{}, vertexID{}, fragmentID{};
+            uint vao{}, vbo{}, ebo{}, programID{}, vertexID{}, fragmentID{};
             size_t elementCount{};
 
             size_t layoutCount();

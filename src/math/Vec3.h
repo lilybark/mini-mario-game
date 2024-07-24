@@ -19,6 +19,8 @@ namespace MiniMario {
             Vec3(const Vector<3, float>&);
 
             Vec3 cross(const Vec3 &other) const;
+
+            static const Vec3 ZERO;
         };
 
     } // Math

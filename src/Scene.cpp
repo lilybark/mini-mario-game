@@ -6,7 +6,7 @@
 namespace MiniMario {
 
     Entity *Scene::getEntity(size_t id) {
-        for (Entity *e : this->entities) {
+        for (Entity *e: this->entities) {
             if (e && e->getID() == id) {
                 return e;
             }
@@ -15,6 +15,23 @@ namespace MiniMario {
         // TODO: print error
         return nullptr;
     }
+
+    void Scene::update(double dt) {
+        this->uploadCamera();
+
+        for (auto *e: this->entities) {
+            e->update(dt);
+        }
+    }
+    void Scene::stop() {
+        for (const Entity *e: this->entities) {
+            delete e;
+        }
+
+        this->entities.clear();
+    }
+
+    Renderer::Camera *Scene::getCamera() { return &this->camera; }
 
     void Scene::uploadCamera() {
         Math::Mat4 proj = this->camera.getPerspectiveMatrix();

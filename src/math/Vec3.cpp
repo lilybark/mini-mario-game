@@ -35,5 +35,7 @@ namespace MiniMario {
                     this->data[0] * other.data[1] - this->data[1] * other.data[0]
                     );
         }
+
+        const Vec3 Vec3::ZERO = Vec3();
     } // Math
 } // MiniMario

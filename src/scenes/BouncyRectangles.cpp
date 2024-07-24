@@ -1,65 +1,61 @@
 /* date = May 12, 2024 5:12 PM */
 
-#include <cstdio>
 #include "BouncyRectangles.h"
-#include "entities/Rectangle.h"
+
+#include "entities/Box.h"
+#include "input/Keyboard.h"
+#include "input/Mouse.h"
 
 namespace MiniMario {
-    const float rectWidth = 0.2;
+    const Math::Vec3 scale = {1.0, 2.0, 2.0};
+    const Math::Vec4 color = {0.0, 0.0, 1.0, 1.0};
+    static size_t boxID = 0;
     void BouncyRectangles::start() {
-        // create rectangles!
-        int numLeftRight = 5;
-        int numUpDown = 5;
+        auto *r = this->spawn<Box>();
 
-        float horizSpacing = 0.8f / ((static_cast<float>(numLeftRight) - 1) / 2.0f);
-        float vertSpacing = 0.8f / ((static_cast<float>(numUpDown) - 1) / 2.0f);
+        r->setPos(Math::Vec3::ZERO);
+        r->setScale(scale);
+        r->setColor(color);
 
-        this->camera.moveTo({0.0, 0.0, 0.1});
+        boxID = r->getID();
 
-        for (int z = 0; z < 10; z++) {
-            for (int i = 0; i < numLeftRight; i++) {
-                for (int j = 0; j < numUpDown; j++) {
-                    auto *r = new Rectangle();
-
-                    r->moveTo({
-                                      static_cast<float>(-0.8 + horizSpacing * i),
-                                      static_cast<float>(-0.8 + vertSpacing * j),
-                                      -2.0f+z*0.2f});
-                    r->rescale({rectWidth, rectWidth, 0.5});
-                    Math::Vec4 newColor = {
-                            r->getPos()[0],
-                            r->getPos()[1],
-                            r->getPos()[2],
-                            1.0
-                    };
-                    newColor = (newColor + Math::Vec4(1.0)) / 2.0;
-                    r->setColor(newColor);
-
-                    this->entities.push_back(r);
-                }
-            }
-        }
+        camera.moveTo({1.0, 1.0, 10.0});
     }
 
     void BouncyRectangles::update(double dt) {
-        static double acc = 0;
-        acc += dt;
-
-        this->camera.moveTo({(float)cos(acc), (float)sin(acc), (float)sin(2*acc)*2.0f+1.0f});
-
-        // make them bounce!
-        this->uploadCamera();
-
-        for (Entity *e : this->entities) {
-            //e->rescale({rectWidth, static_cast<float>(rectWidth * sin(acc)), rectWidth});
-
-            e->update(dt);
+        static Math::Vec3 iscale = scale;
+        using Key = Keyboard::Key;
+        auto dtf = static_cast<float>(dt) * 3.0f;
+        if (Keyboard::isPressed(Key::W)) {
+            camera.translate({0.0, 0.0, -1.0f*dtf});
         }
+        if (Keyboard::isPressed(Key::S)) {
+            camera.translate({0.0, 0.0, 1.0f*dtf});
+        }
+        if (Keyboard::isPressed(Key::A)) {
+            camera.translate({-1.0f*dtf, 0.0, 0.0});
+        }
+        if (Keyboard::isPressed(Key::D)) {
+            camera.translate({1.0f*dtf, 0.0, 0.0});
+        }
+        if (Keyboard::isPressed(Key::SPACE)) {
+            camera.translate({0.0, 1.0f*dtf, 0.0});
+        }
+        if (Keyboard::isPressed(Key::LEFT_SHIFT)) {
+            camera.translate({0.0, -1.0f*dtf, 0.0});
+        }
+
+        iscale[0] = (float) fabs(sqrt(2) * (cos(2 * glfwGetTime()) + sin(2 * glfwGetTime())));
+        iscale[1] = (float) fabs(sin(glfwGetTime()));
+        iscale[2] = (float) fabs(cos(glfwGetTime()));
+
+        auto r = dynamic_cast<Box *>(this->getEntity(boxID));
+
+        r->setScale(iscale);
+
+        Scene::update(dt);
     }
     void BouncyRectangles::stop() {
-        // delete rectangles!
-        for (Entity *e : this->entities) {
-            delete e;
-        }
+        Scene::stop();
     }
 } // MiniMario

@@ -7,6 +7,7 @@
 
 namespace MiniMario {
     void BoxedIn::start() {
+        /*
         auto *left = new Rectangle();
         auto *right = new Rectangle();
         auto *up = new Rectangle();
@@ -22,6 +23,7 @@ namespace MiniMario {
         this->entities.push_back(down);
         this->entities.push_back(front);
         this->entities.push_back(back);
+        */
     }
 
     void BoxedIn::update(double d) {

@@ -4,6 +4,7 @@
 #define MINI_MARIO_GAME_APP_H
 
 #include <GLFW/glfw3.h>
+#include <string>
 
 namespace MiniMario {
     //forward decl
@@ -15,14 +16,9 @@ namespace MiniMario {
      * This class handles the initialization of the program, the main window, and any button/mouse inputs from the user.
      * It's major backing is in GLFW.
      *
-     * // TODO: make this a singleton???
      */
     class App {
     public:
-        /**
-         * Starts the MiniMario App, initializing primary window.
-         */
-        App();
         /**
          * Closes MiniMario, freeing any files or handles.
          */
@@ -31,14 +27,44 @@ namespace MiniMario {
          * Spins up the App, causing it to enter the game loop.
          */
         void run();
+
+        int getWidth() const {
+            return width;
+        }
+
+        int getHeight() const {
+            return height;
+        }
+
+        /**
+         * Gets a pointer to the App instance.
+         * @return App singleton
+         */
+        static App *get();
+
+        /**
+         * Gets the change in time since the last update frame.
+         */
         double deltaTime() const;
 
-        void setScene(MiniMario::Scene *s);
-
+        /**
+         * Sets the current scene, closing currently active scene.
+         * @param s Pointer to valid scene instance.
+         */
+        void setScene(Scene *s);
     private:
+        /**
+         * Starts the MiniMario App, initializing primary window.
+         */
+        App();
+        static App *_inst;
+
         GLFWwindow *window;
         Scene *scene;
+        std::string title{};
         double dt{};
+        double runtime{};
+        int width, height;
     };
 }
 

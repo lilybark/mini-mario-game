@@ -14,25 +14,33 @@ namespace MiniMario {
          * Simple renderer class. Currently only supports rendering quads to the screen; this is a 2D Game at the moment.
          */
         class RendererController {
-        private:
             RendererController();
             static RendererController *_inst;
             VertexBuffer *vertexBuffer;
 
-            Math::Mat4 projMatrix, viewMatrix;
+            Math::Mat4 projMatrix{}, viewMatrix{};
 
         public:
             RendererController(RendererController &) = delete;
             ~RendererController();
+            size_t getNumVertices() const { return this->vertexBuffer->getNumVertices(); };
             static RendererController *get();
             void update(double);
             void close();
 
             void pushVertex(const float *data);
 
-            void setProjection(Math::Mat4 &mat4);
+            void pushElementOrder(const int *data, size_t count, size_t vertexOffset);
 
-            void setView(Math::Mat4 &mat4);
+            void setProjection(const Math::Mat4 &mat4);
+
+            void setView(const Math::Mat4 &mat4);
+        };
+
+        class Renderable {
+        public:
+            virtual ~Renderable() = default;
+            virtual void render() = 0;
         };
     }
 }

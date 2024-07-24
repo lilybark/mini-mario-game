@@ -7,6 +7,7 @@
 namespace MiniMario {
     void Rectangle::render() {
         using namespace Math;
+        /*
         Vec3 corners[] = {
                 this->pos + this->scale / 2.0f,
                 this->pos + Vec3(-this->scale[0], this->scale[1], this->scale[2]) / 2.0f,
@@ -36,13 +37,16 @@ namespace MiniMario {
 
             MiniMario::Renderer::RendererController::get()->pushVertex(&vertex[0]);
         }
+        */
     }
 
     Rectangle::Rectangle() {
         using namespace Math;
+        /*
         this->pos = Vec3(0.0, 0.0, 0.0);
         this->scale = Vec3(0.5, 0.5, 0.5);
         this->color = Vec4(1.0, 1.0, 1.0, 1.0);
+        */
     }
 
     void Rectangle::update(double) {

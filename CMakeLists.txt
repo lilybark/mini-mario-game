@@ -48,6 +48,12 @@ add_executable(mini-mario
         src/math/Vec2.h
         src/scenes/BoxedIn.cpp
         src/scenes/BoxedIn.h
+        src/Component.cpp
+        src/Component.h
+        src/entities/Box.cpp
+        src/entities/Box.h
+        src/math/Mat3.cpp
+        src/math/Mat3.h
 )
 
 set_target_properties(mini-mario PROPERTIES POSITION_INDEPENDENT_CODE True)

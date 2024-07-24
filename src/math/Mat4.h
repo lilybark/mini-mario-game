@@ -24,6 +24,10 @@ namespace MiniMario {
             static Mat4 orthographic(float left, float right, float top, float bottom, float near, float far);
             static Mat4 perspective(float fov, float aspect, float front, float back);
             static Mat4 viewMatrix(const Vec3 &camPos, const Vec3 &eye, const Vec3 &up);
+
+            static Mat4 scale3D(const Vec3 &scaling);
+            static Mat4 translate3D(const Vec3 &translating);
+            static Mat4 rotate3D(const Vec3 &eulerAngles);
         };
 
     } // Math

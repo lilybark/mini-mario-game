@@ -3,8 +3,13 @@
 #include "Entity.h"
 
 namespace MiniMario {
-    size_t Entity::_ID = 0;
+    size_t Entity::ID = 0;
 
+    size_t Entity::getID() const {
+        return id;
+    }
+
+    /*
     void Entity::translate(const Math::Vec3 &d) {
         this->pos += d;
     }
@@ -13,23 +18,18 @@ namespace MiniMario {
         this->scale = s;
     }
 
-    size_t Entity::getID() {
-        return id;
-    }
-
-    Entity::~Entity() {
-
-    }
+    Entity::~Entity() = default;
 
     void Entity::moveTo(const Math::Vec3 &d) {
         this->pos = d;
     }
 
-    Math::Vec3 Entity::getPos() {
+    Math::Vec3 Entity::getPos() const {
         return this->pos;
     }
 
     void Entity::setRot(const Math::Vec3 &d) {
         this->rot = d;
     }
+    */
 } // MiniMario

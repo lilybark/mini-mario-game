@@ -41,7 +41,7 @@ namespace MiniMario {
              * @param vec The column vector on the right side of the multiplication.
              * @param dest Where the result of this operation is stored.
              */
-            void matVecMul(const MiniMario::Math::Vector<N,T> &vec, Vector<N,T> &dest) {
+            void matVecMul(const Vector<N,T> &vec, Vector<N,T> &dest) {
                 for (int i = 0; i < N; i++) {
                     dest[i] = 0;
                     for (int j = 0; j < N; j++) {

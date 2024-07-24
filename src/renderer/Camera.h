@@ -17,18 +17,18 @@ namespace MiniMario {
             void translate(Math::Vec3 dPos);
 
             // TODO: implement rotation
-            void setRotate(Math::Vec3 rot);
+            void setRotation(Math::Vec3 rot);
             void rotate(Math::Vec3 dRot);
 
-            Math::Mat4 getOrthographicMatrix();
-            Math::Mat4 getPerspectiveMatrix();
-
-            Math::Mat4 getViewMatrix();
+            Math::Mat4 getOrthographicMatrix() const;
+            Math::Mat4 getPerspectiveMatrix() const;
+            Math::Mat4 getViewMatrix() const;
 
         private:
-            Math::Mat4 projection;
+            Math::Mat4 projection{};
             Math::Vec3 position;
-            Math::Vec3 gimbalRotation;
+            Math::Vec3 eulerRotation;
+            float zoom;
         };
 
     } // Renderer

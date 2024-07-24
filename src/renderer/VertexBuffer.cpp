@@ -2,23 +2,25 @@
 
 #include "VertexBuffer.h"
 
+#include <cstring>
 #include <fstream>
 #include <iostream>
-#include <cstring>
 #include <limits>
+
+#include "glad/gl.h"
 
 namespace MiniMario {
     namespace Renderer {
         VertexBuffer::VertexBuffer(size_t count, const std::vector<LayoutElement> &layout) {
             this->layout = std::vector<LayoutElement>(layout);
             size_t floatsPerVertex = 0;
-            for (const auto& el : this->layout) {
-                floatsPerVertex += el.count;
+            for (const auto &[name, count] : this->layout) {
+                floatsPerVertex += count;
             }
 
-            this->vertexData = (float *) malloc(count * floatsPerVertex * sizeof(float));
+            this->vertexData = static_cast<float *>(malloc(count * floatsPerVertex * sizeof(float)));
 
-            this->elementData = (int *) malloc(count * 6 / 4 * sizeof(int));
+            this->elementData = static_cast<int *>(malloc(count * 6 * sizeof(int)));
 
             // create OpenGL buffer objects
             glGenBuffers(1, &this->vbo);
@@ -176,31 +178,42 @@ namespace MiniMario {
                          GL_DYNAMIC_DRAW);
 
             // every triangle has three vertices. when rendering a quad, we're working with four contiguous vertices.
-            this->elementCount = 0;
-
-            for (int i = 0; i < this->numVertices / 4; i++) {
-                this->elementData[i*6]   = (3 + i*4);
-                this->elementData[i*6+1] = (2 + i*4);
-                this->elementData[i*6+2] = (0 + i*4);
-                this->elementData[i*6+3] = (0 + i*4);
-                this->elementData[i*6+4] = (2 + i*4);
-                this->elementData[i*6+5] = (1 + i*4);
-
-                this->elementCount += 6;
-            }
+            // Edit: this process is now done on a per-element basis. Implement this functionality in your own renderables.
+            // this->elementCount = 0;
+            //
+            // for (int i = 0; i < this->numVertices / 4; i++) {
+            //     this->elementData[i*6]   = (3 + i*4);
+            //     this->elementData[i*6+1] = (2 + i*4);
+            //     this->elementData[i*6+2] = (0 + i*4);
+            //     this->elementData[i*6+3] = (0 + i*4);
+            //     this->elementData[i*6+4] = (2 + i*4);
+            //     this->elementData[i*6+5] = (1 + i*4);
+            //
+            //     this->elementCount += 6;
+            // }
 
             glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-                         static_cast<long>(this->numVertices / 4 * 6 * sizeof(int)),
+                         static_cast<long>(this->elementCount * sizeof(int)),
                          this->elementData,
-                         GL_DYNAMIC_DRAW);
+                         GL_STATIC_DRAW);
         }
 
         void VertexBuffer::insertVertex(const float *data) {
             size_t floatOffset = numVertices * this->layoutCount();
             // note that pointer arithmetic here implicitly resizes floatOffset by a factor of sizeof(float)
-            memcpy((float *) (this->vertexData + floatOffset), data, this->layoutCount()*sizeof(float));
+            memcpy(this->vertexData + floatOffset, data, this->layoutCount() * sizeof(float));
 
             this->numVertices++;
+        }
+
+        void VertexBuffer::insertElements(const int *data, size_t size, size_t vertexOffset) {
+            size_t offset = elementCount;
+
+            for (size_t i = 0; i < size; i++) {
+                this->elementData[i + offset] = data[i] + vertexOffset;
+            }
+
+            this->elementCount += size;
         }
 
         void VertexBuffer::attachShader() const {
@@ -222,18 +235,18 @@ namespace MiniMario {
             size_t offset = 0;
             for (int i = 0; i < this->layout.size(); i++) {
                 glVertexAttribPointer(i,
-                                      (GLint) (this->layout[i].count),
+                                      static_cast<GLint>(this->layout[i].count),
                                       GL_FLOAT,
                                       GL_TRUE,
-                                      this->layoutCount()*sizeof(float),
-                                      (void *) offset);
+                                      static_cast<GLsizei>(this->layoutCount()*sizeof(float)),
+                                      reinterpret_cast<void *>(offset));
                 glEnableVertexAttribArray(i);
                 offset += this->layout[i].count * sizeof(float);
             }
         }
 
         void VertexBuffer::render() const {
-            glDrawElements(GL_TRIANGLES, (GLint) this->elementCount, GL_UNSIGNED_INT, nullptr);
+            glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
         }
 
         void VertexBuffer::disableAttributes() {
@@ -253,6 +266,28 @@ namespace MiniMario {
         void VertexBuffer::clear() {
             this->elementCount = 0;
             this->numVertices = 0;
+        }
+        void VertexBuffer::uploadFloat(const std::string &name, const float f) const {
+            glGetError();
+            glUseProgram(0);
+
+            auto c = glGetError();
+            if (c) {
+                std::cerr << "ERROR: received opengl 1 error: " << c << std::endl;
+            }
+            glUseProgram(this->programID);
+            c = glGetError();
+            if (c) {
+                std::cerr << "ERROR: received opengl 1 error: " << c << std::endl;
+            }
+            auto *chars = name.c_str();
+            auto loc = glGetUniformLocation(this->programID, chars);
+
+            /*if (loc == -1) {
+                std::cerr << "ERROR: shader uniform " << name << " not found." << std::endl;
+                exit(-1);
+            }*/
+            glUniform1fv(loc, 1, &f);
         }
 
         void VertexBuffer::uploadMat4(const std::string &name, const Math::Mat4 &m) const {

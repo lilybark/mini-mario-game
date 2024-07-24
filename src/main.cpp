@@ -14,9 +14,9 @@ int main() {
     cout << "hello pookie bear";
     cout << flush;
 
-    App app = App();
-    app.setScene(new Painter());
-    app.run();
+    auto *app = App::get();
+    app->setScene(new BouncyRectangles());
+    app->run();
 
     return 0;
 }
